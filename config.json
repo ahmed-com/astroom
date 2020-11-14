@@ -1,0 +1,5 @@
+{
+    "scoketEndPoint": "http://localhost:5000/",
+    "joinRoomEndPoint": "http://localhost:5000/joinRoom",
+    "createRoomEndPoint": "http://localhost:5000/createRoom"
+}
