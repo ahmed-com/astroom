@@ -1,15 +1,13 @@
 import { Socket } from 'socket.io-client';
 import vm from '../main';
 
-type streamEventListener = (stream: MediaStream) => void
-
 export default class User{
 
     private _name: string;
     private _socketId: string;
     private _pc: RTCPeerConnection;
-    private _mySocket: Socket | null;
-    private _videoStreamEventListeners: streamEventListener[];
+    private _mySocket: Socket | null; // TO-DO : change this prop to static
+    private _stream: MediaStream;
 
     private static myStream: MediaStream;
 
@@ -18,44 +16,26 @@ export default class User{
         this._socketId = socketId;
         this._pc = new RTCPeerConnection();
         this._mySocket = vm.$store.getters.socket;
-        this._videoStreamEventListeners = [];
+        this._stream = new MediaStream();
 
-        this._pc.ontrack = ({streams}) => {
-            const [videoStream] = streams;
-
-            this.videoStream = videoStream;
+        this._pc.ontrack = ev => {
+            this._stream.addTrack(ev.track);
+            console.log("track recieved is :",ev.track);
         }
 
-        User
-        .myStream
-        .getTracks()
-        .forEach(track=>{
-            this._pc.addTrack(track,User.myStream);
-        });
+        this.startStreaming();
         
         this._mySocket?.on('offerCreated',(data: {offer: RTCSessionDescription; socketId: string})=>{
             if(data.socketId === this._socketId) this.handleOffer(data.offer);
         });
     }
 
+    public get stream(): MediaStream{
+        return this._stream;
+    }
+
     public static setMyStream(stream: MediaStream): void{
         User.myStream = stream;
-    }
-
-    private set videoStream(stream: MediaStream){
-        this._videoStreamEventListeners.forEach(listener=>{
-            listener(stream);
-        });
-    }
-
-    private onVideoStream(listener: streamEventListener){
-        this._videoStreamEventListeners.push(listener);
-    }
-
-    public async getVideoStream(): Promise<MediaStream>{
-        return new Promise((resolve,_)=>{
-            this.onVideoStream(resolve);
-        })
     }
 
     private async handleOffer(offer: RTCSessionDescription){
@@ -65,6 +45,16 @@ export default class User{
         this._mySocket?.emit('createAnswer',{
             answer,
             to : this._socketId
+        });
+    }
+
+    private startStreaming(){
+        User
+        .myStream
+        .getTracks()
+        .forEach(track=>{
+            console.log('track added :',track);
+            this._pc.addTrack(track);
         });
     }
 

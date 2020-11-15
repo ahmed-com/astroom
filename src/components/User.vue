@@ -30,8 +30,8 @@ export default class User extends UserProps{
         user: HTMLMediaElement;
     }
 
-    async mounted(){
-        const videoStream: MediaStream = await this.user.getVideoStream();
+    mounted(){
+        const videoStream: MediaStream = this.user.stream;
         this.playVideo(videoStream);
     }
 
