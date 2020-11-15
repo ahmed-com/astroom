@@ -1,6 +1,6 @@
 <template>
     <v-card height="300">
-        <video autoplay ref="user" muted width="100%"></video>
+        <video :id="id" autoplay muted width="100%" ref="user" ></video>
         <h2>{{name}}</h2>
     </v-card>
 </template>
@@ -20,6 +20,10 @@ export default class User extends UserProps{
 
     get name(): string{
         return this.user.name;
+    }
+
+    get id(): string{
+        return this.user.socketId;
     }
 
     $refs!: {
