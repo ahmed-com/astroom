@@ -26,15 +26,19 @@ export default class User{
             this.videoStream = videoStream;
         }
 
+        this.startStreaming();
+        
+        this._mySocket?.on('offerCreated',(data: {offer: RTCSessionDescription; socketId: string})=>{
+            if(data.socketId === this._socketId) this.handleOffer(data.offer);
+        });
+    }
+
+    private startStreaming(){
         User
         .myStream
         .getTracks()
         .forEach(track=>{
             this._pc.addTrack(track,User.myStream);
-        });
-        
-        this._mySocket?.on('offerCreated',(data: {offer: RTCSessionDescription; socketId: string})=>{
-            if(data.socketId === this._socketId) this.handleOffer(data.offer);
         });
     }
 

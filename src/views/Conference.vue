@@ -4,7 +4,7 @@
       v-model="drawer"
       app
     >
-      <video autoplay muted width="100%" ref="me" ></video>
+      <video autoplay muted width="100%" ref="me" id="me" ></video>
     </v-navigation-drawer>
 
     <v-app-bar app>

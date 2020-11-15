@@ -1,5 +1,5 @@
 {
-    "scoketEndPoint": "http://localhost:5000/",
-    "joinRoomEndPoint": "http://localhost:5000/joinRoom",
-    "createRoomEndPoint": "http://localhost:5000/createRoom"
+    "scoketEndPoint": "https://desolate-castle-52338.herokuapp.com/",
+    "joinRoomEndPoint": "https://desolate-castle-52338.herokuapp.com/joinRoom",
+    "createRoomEndPoint": "https://desolate-castle-52338.herokuapp.com/createRoom"
 }
