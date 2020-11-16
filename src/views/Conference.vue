@@ -59,8 +59,9 @@ export default class Conference extends Vue{
 
     get joinLink(): string{
         const baseUrl = window.location.origin;
-        const queryParams = `?room=${this.room}`
-        return baseUrl + '/conference' + queryParams;
+        const publicPath = process.env.NODE_ENV === 'production' ? '/astroom/' : '/'
+        const queryParams = `?room=${this.room}`;
+        return baseUrl + publicPath + 'conference' + queryParams;
     }
 
     initializeApp(stream: MediaStream){

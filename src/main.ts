@@ -23,11 +23,6 @@ const socket = io(scoketEndPoint);
 socket.on('connect',()=>{
   vm.$store.commit('setSocket',socket);
 
-  // socket.on('userJoined',function handelJoin(data: {name: string; socketId: string}): void{
-  //   const user: User = new User(data.name, data.socketId);
-  //   vm.$store.commit('pushUser',user);
-  // });
-
   socket.on('userLeft',function handleLeave(data: {name: string; socketId: string}): void{
     vm.$store.commit('removeUser',data.socketId);
   });

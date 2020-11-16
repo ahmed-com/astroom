@@ -1,18 +1,17 @@
 <template>
-  <router-view />
+  <router-view v-if="isConnected" />
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import {Component} from 'vue-property-decorator'
 
-export default Vue.extend({
-  name: 'App',
+@Component
+export default class App extends Vue{
 
-  components: {
-  },
+  get isConnected(): boolean{
+    return this.$store.getters.socket === null ? false : true;
+  }
 
-  data: () => ({
-    //
-  }),
-});
+}
 </script>

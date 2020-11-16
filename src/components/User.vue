@@ -1,7 +1,8 @@
 <template>
     <v-card height="300">
-        <video :id="id" autoplay muted width="100%" ref="user" ></video>
+        <video :id="id" autoplay loop controls muted width="100%" ref="user" ></video>
         <h2>{{name}}</h2>
+        <h6>{{id}}</h6>
     </v-card>
 </template>
 <script lang="ts">
@@ -30,13 +31,18 @@ export default class User extends UserProps{
         user: HTMLMediaElement;
     }
 
-    async mounted(){
+    get videoEl(): HTMLMediaElement{
+        return this.$refs.user;
+    }
+
+    async beforeMount(){
         const videoStream: MediaStream = await this.user.getVideoStream();
         this.playVideo(videoStream);
     }
 
     playVideo(stream: MediaStream){
-        this.$refs.user.srcObject = stream;
+        this.videoEl.srcObject = stream;
+        this.videoEl.play();
     }
 
 }
